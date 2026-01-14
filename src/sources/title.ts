@@ -25,6 +25,8 @@ export default defineFrameSource<TitleLayer>("title", async ({ width, height, pa
     fontSize,
     textAlign: "center",
     width: width * 0.8,
+    originX: "left",
+    originY: "top",
   });
 
   return {

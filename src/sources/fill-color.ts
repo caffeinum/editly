@@ -14,10 +14,12 @@ export default defineFrameSource<FillColorLayer>(
       async readNextFrame(_, canvas) {
         const rect = new Rect({
           left: 0,
-          right: 0,
+          top: 0,
           width,
           height,
           fill: color || randomColor,
+          originX: "left",
+          originY: "top",
         });
         canvas.add(rect);
       },

@@ -40,6 +40,7 @@ export default defineFrameSource<SubtitleLayer>("subtitle", async ({ width, heig
         width,
         height: textBox.height + padding * 2,
         top: height,
+        originX: "left",
         originY: "bottom",
         fill: backgroundColor,
         opacity: easedProgress,

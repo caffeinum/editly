@@ -67,7 +67,12 @@ export async function rgbaToFabricImage({
   // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/putImageData
   ctx.putImageData(new ImageData(toUint8ClampedArray(rgba), width, height), 0, 0);
   // https://stackoverflow.com/questions/58209996/unable-to-render-tiff-images-and-add-it-as-a-fabric-object
-  return new fabric.FabricImage(canvas);
+  // fabric v7 changed default originX/originY from 'left'/'top' to 'center'/'center'
+  // we need explicit origins for correct positioning
+  return new fabric.FabricImage(canvas, {
+    originX: "left",
+    originY: "top",
+  });
 }
 
 export type BlurImageOptions = {
@@ -86,8 +91,11 @@ export async function blurImage({ mutableImg, width, height }: BlurImageOptions)
   const passes = 1;
   boxBlurImage(ctx, width, height, blurAmount, false, passes);
 
-  return new fabric.FabricImage(canvas);
-} // http://fabricjs.com/kitchensink
+  return new fabric.FabricImage(canvas, {
+    originX: "left",
+    originY: "top",
+  });
+}
 
 export default defineFrameSource<FabricLayer>("fabric", async ({ width, height, params }) => {
   const { onRender, onClose } = await params.func({ width, height, fabric, params });

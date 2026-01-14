@@ -43,6 +43,8 @@ export default defineFrameSource<NewsTitleLayer>(
           fontFamily,
           fontSize,
           charSpacing: width * 0.1,
+          originX: "left",
+          originY: "top",
         });
 
         const bgWidth = textBox.width + paddingV * 2;
@@ -52,6 +54,8 @@ export default defineFrameSource<NewsTitleLayer>(
           width: bgWidth,
           height: textBox.height + paddingH * 2,
           fill: backgroundColor,
+          originX: "left",
+          originY: "top",
         });
 
         canvas.add(rect);

@@ -506,7 +506,10 @@ async function rgbaToFabricImage({ width, height, rgba }) {
   canvas.classList = /* @__PURE__ */ new Set();
   const ctx = canvas.getContext("2d");
   ctx.putImageData(new ImageData(toUint8ClampedArray(rgba), width, height), 0, 0);
-  return new fabric$1.FabricImage(canvas);
+  return new fabric$1.FabricImage(canvas, {
+    originX: "left",
+    originY: "top",
+  });
 }
 async function blurImage({ mutableImg, width, height }) {
   mutableImg.set({ scaleX: width / mutableImg.width, scaleY: height / mutableImg.height });
@@ -515,7 +518,10 @@ async function blurImage({ mutableImg, width, height }) {
   const blurAmount = Math.min(100, Math.max(width, height) / 10);
   const passes = 1;
   boxBlurImage(ctx, width, height, blurAmount, false, passes);
-  return new fabric$1.FabricImage(canvas);
+  return new fabric$1.FabricImage(canvas, {
+    originX: "left",
+    originY: "top",
+  });
 }
 var fabric = defineFrameSource("fabric", async ({ width, height, params }) => {
   const { onRender, onClose } = await params.func({ width, height, fabric: fabric$1, params });
@@ -625,10 +631,12 @@ var fillColor = defineFrameSource("fill-color", async ({ params, width, height }
     async readNextFrame(_, canvas) {
       const rect = new Rect({
         left: 0,
-        right: 0,
+        top: 0,
         width,
         height,
         fill: color || randomColor,
+        originX: "left",
+        originY: "top",
       });
       canvas.add(rect);
     },
@@ -947,6 +955,8 @@ var newsTitle = defineFrameSource("news-title", async ({ width, height, params }
         fontFamily,
         fontSize,
         charSpacing: width * 0.1,
+        originX: "left",
+        originY: "top",
       });
       const bgWidth = textBox.width + paddingV * 2;
       const rect = new Rect({
@@ -955,6 +965,8 @@ var newsTitle = defineFrameSource("news-title", async ({ width, height, params }
         width: bgWidth,
         height: textBox.height + paddingH * 2,
         fill: backgroundColor,
+        originX: "left",
+        originY: "top",
       });
       canvas.add(rect);
       canvas.add(textBox);
@@ -1046,9 +1058,11 @@ var slideInText = defineFrameSource("slide-in-text", async ({ width, height, par
 async function getFadedObject({ object, progress }) {
   const rect = new fabric$1.Rect({
     left: 0,
+    top: 0,
     width: object.width,
     height: object.height,
-    top: 0,
+    originX: "left",
+    originY: "top",
   });
   rect.set(
     "fill",
@@ -1108,6 +1122,7 @@ var subtitle = defineFrameSource("subtitle", async ({ width, height, params }) =
         width,
         height: textBox.height + padding * 2,
         top: height,
+        originX: "left",
         originY: "bottom",
         fill: backgroundColor,
         opacity: easedProgress,
@@ -1134,6 +1149,8 @@ var title = defineFrameSource("title", async ({ width, height, params }) => {
     fontSize,
     textAlign: "center",
     width: width * 0.8,
+    originX: "left",
+    originY: "top",
   });
   return {
     async readNextFrame(progress, canvas) {

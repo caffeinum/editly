@@ -71,9 +71,11 @@ async function getFadedObject<T extends fabric.FabricObject>({
 }) {
   const rect = new fabric.Rect({
     left: 0,
+    top: 0,
     width: object.width,
     height: object.height,
-    top: 0,
+    originX: "left",
+    originY: "top",
   });
 
   rect.set(
