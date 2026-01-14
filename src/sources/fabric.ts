@@ -16,9 +16,16 @@ export function canvasToRgba(ctx: CanvasRenderingContext2D) {
 
 export function fabricCanvasToRgba(fabricCanvas: fabric.StaticCanvas) {
   const internalCanvas = fabricCanvas.getNodeCanvas();
-  const ctx = internalCanvas.getContext("2d");
+  const width = fabricCanvas.width ?? 0;
+  const height = fabricCanvas.height ?? 0;
 
-  return canvasToRgba(ctx);
+  // WORKAROUND: fabric 6.x + jsdom returns truncated buffer from getImageData
+  // Copy to a fresh node-canvas to get correct buffer size
+  const outputCanvas = createCanvas(width, height);
+  const outputCtx = outputCanvas.getContext("2d");
+  outputCtx.drawImage(internalCanvas, 0, 0);
+
+  return canvasToRgba(outputCtx);
 }
 
 export function createFabricCanvas({ width, height }: { width: number; height: number }) {
